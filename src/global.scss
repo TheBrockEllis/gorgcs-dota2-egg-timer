@@ -24,3 +24,23 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@500&display=swap');
+
+* {
+  font-family: 'DM Mono', monospace;
+}
+
+body {
+  position: relative;
+}
+
+ion-app.ion-page {
+  width: 414px;
+  height: 896px;
+  position: absolute;
+  left: calc(50% - 212px);
+  top: 0;
+  scale: 1;
+  border: 1px solid white;
+}
