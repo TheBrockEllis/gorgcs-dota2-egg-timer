@@ -1,0 +1,7 @@
+{
+  "name": "Gorgc's Dota2 Egg Timer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
