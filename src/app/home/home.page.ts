@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 const DAY_NIGHT_INTERVAL = 300;
 const ROSH_INTERVAL = 300;
@@ -17,12 +17,16 @@ const WARNING_BUFFER = 30;
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
   gameStarted: boolean = false;
   seconds: number = 0;
   formattedTime: string = '00:00';
   timerIntervalReference: any;
   roshTimerStart: number = 0;
+
+  synth!: SpeechSynthesis;
+  voices: Array<SpeechSynthesisVoice> = [];
+  selectedVoice!: string;
 
   isModalOpen: boolean = false;
   debug:boolean = false;
@@ -52,12 +56,28 @@ export class HomePage {
     'roshanspawn': 'Roshan respawning in 8-11 minutes'
   }
 
-  constructor() {
+  constructor(private window: Window) {
+  }
+
+  ngOnInit() {
+    // Is support enabled?
+    if ('speechSynthesis' in this.window) {
+      this.synth = this.window.speechSynthesis;
+
+      window.speechSynthesis.onvoiceschanged = () => {
+        console.warn('voices are ready',);
+        this.voices = window.speechSynthesis.getVoices();
+      };
+
+    } else {
+      // If not inform the user :)
+      alert('Your browser does NOT support the Web Speech API')
+    }
   }
 
   speak(text: string) {
     var msg = new SpeechSynthesisUtterance(text);
-    msg.voice = window.speechSynthesis.getVoices()[0];
+    msg.voice = window.speechSynthesis.getVoices().find(v => v.name === this.selectedVoice) as SpeechSynthesisVoice;
     window.speechSynthesis.speak(msg);
   }
 
