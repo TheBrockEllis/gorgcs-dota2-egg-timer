@@ -37,6 +37,7 @@ body {
 
 ion-app.ion-page {
   width: 414px;
+  max-width: 100%;
   height: 896px;
   position: absolute;
   left: calc(50% - 212px);
