@@ -6,7 +6,7 @@ const WISDOM_RUNE_INTERVAL = 420;
 const BOUNTY_RUNE_INTERVAL = 180;
 const LOTUS_INTERVAL = 180;
 const POWER_RUNE_INTERVAL = 2 * 60;
-const TORMENTOR_INTERVAL = 20 * 60;
+const TORMENTOR_INTERVAL = 20 * 60; // TODO
 const MIN_ROSH_SPAWN_INTERVAL = 8 * 60;
 const MAX_ROSH_SPAWN_INTERVAL = 11 * 60;
 
@@ -91,6 +91,9 @@ export class HomePage implements OnInit {
     this.gameStarted = false;
     this.seconds = 0;
     this.formattedTime = "00:00";
+    this.roshTimerStart = 0;
+    this.warnings = [];
+
     clearInterval(this.timerIntervalReference);
   }
 

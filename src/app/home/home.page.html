@@ -16,7 +16,22 @@
 
 <ion-content [fullscreen]="true">
 
-  <img src="assets/gorgc-logo.png" *ngIf="!gameStarted" class="ion-margin-top" />
+  <div class="marketing" *ngIf="!gameStarted">
+    <img src="assets/gorgc-logo.png" *ngIf="!gameStarted" class="ion-margin-top" />
+    <p class="title">REMINDS YOU OF THE TIME OF DOTA2 EVENTS</p>
+    <ul>
+      <li>Power Runes</li>
+      <li>Wisdom Runes</li>
+      <li>Lotus</li>
+      <li>Tormentor Spawns (coming soon)</li>
+      <li>Rosh Location</li>
+      <li>Day/Night Cycle</li>
+    </ul>
+
+    <p class="description">Click the button below to start when your dota game starts to get audio notifications of upcoming events!</p>
+    <ion-button expand="full" (click)="startGame()">Start Game</ion-button>
+
+  </div>
 
   <div class="debug" *ngIf="debug">
     <ion-button size="small" (click)="fastForward(180)">>> 5min</ion-button>
@@ -24,14 +39,13 @@
     <ion-button size="small" (click)="fastForward(30)">>>30s</ion-button>
   </div>
 
-  <div class="timer">
+  <div class="timer" *ngIf="gameStarted">
     {{ formattedTime }}
   </div>
 
-  <ion-button expand="full" *ngIf="!gameStarted" (click)="startGame()">Start Game</ion-button>
   <ion-button expand="full" *ngIf="gameStarted" (click)="stopGame()">Stop Game</ion-button>
 
-  <ion-item class="daynight ion-margin-top">
+  <ion-item class="daynight ion-margin-top" *ngIf="gameStarted">
     <ion-avatar slot="start">
       <ion-icon name="{{ rosh === 'south' ? 'arrow-down' : 'arrow-up' }}"></ion-icon>
     </ion-avatar>
@@ -49,7 +63,7 @@
     </ion-chip>
   </ion-item>
 
-  <ion-item class="daynight ion-margin-top">
+  <ion-item class="daynight ion-margin-top" *ngIf="gameStarted">
     <ion-avatar slot="start">
       <ion-icon name="{{ dayNight === 'day' ? 'sunny' : 'moon' }}"></ion-icon>
     </ion-avatar>
@@ -58,12 +72,14 @@
     </ion-label>
   </ion-item>
 
-  <ion-list class="ion-margin-top">
+  <ion-list class="ion-margin-top" *ngIf="gameStarted">
     <ion-list-header>Upcoming events</ion-list-header>
     <ion-item *ngFor="let warning of warnings">
       {{ warningStrings[warning] }}
     </ion-item>
   </ion-list>
+
+  <p class="call-for-help">If any designer out there wants to help make this pretty, please contact me at thebrockellis@gmail.com</p>
 
   <ion-modal [isOpen]="isModalOpen">
     <ng-template>
@@ -81,7 +97,7 @@
           <ion-checkbox [(ngModel)]="debug" labelPlacement="end">Debug Tools</ion-checkbox>
         </ion-item>
 
-        <ion-item>
+        <ion-item *ngIf="voices.length > 0">
           <ion-select label="Select Voice" [(ngModel)]="selectedVoice">
             <ion-select-option *ngFor="let voice of voices">{{ voice.name }}</ion-select-option>
           </ion-select>

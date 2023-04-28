@@ -1,7 +1,30 @@
-img {
-  width: 50%;
-  display: block;
-  margin: 20px auto;
+.marketing {
+
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 50px;
+
+  p.title {
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
+  p.description {
+    border-top: 1px solid white;
+    padding-top: 25px;
+    margin-top: 25px;
+    font-size: .8em;
+    text-align: center;
+  }
+
+  img {
+    width: 50%;
+    display: block;
+    margin: 20px auto;
+  }
+
 }
 
 .timer {
@@ -17,4 +40,13 @@ img {
 
 ion-icon {
   font-size: 2em;
+}
+
+.call-for-help {
+  position: absolute;
+  bottom: 20px;
+  text-align: center;
+  width: 100%;
+  padding: 5%;
+  font-size: 0.8em;
 }
