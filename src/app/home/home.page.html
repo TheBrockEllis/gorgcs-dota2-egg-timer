@@ -1,16 +1,24 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+
     <ion-title>
       Gorgc's Egg Timer
     </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="setOpen(true)">
+        <ion-icon name="cog-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <img src="assets/gorgc-logo.png" />
+  <img src="assets/gorgc-logo.png" *ngIf="!gameStarted" class="ion-margin-top" />
 
-  <div class="debug">
+  <div class="debug" *ngIf="debug">
     <ion-button size="small" (click)="fastForward(180)">>> 5min</ion-button>
     <ion-button size="small" (click)="fastForward(60)">>> 1m</ion-button>
     <ion-button size="small" (click)="fastForward(30)">>>30s</ion-button>
@@ -24,11 +32,30 @@
   <ion-button expand="full" *ngIf="gameStarted" (click)="stopGame()">Stop Game</ion-button>
 
   <ion-item class="daynight ion-margin-top">
-    It is currently <ion-icon name="{{ dayNight === 'day' ? 'sunny' : 'moon' }}"></ion-icon>
+    <ion-avatar slot="start">
+      <ion-icon name="{{ rosh === 'south' ? 'arrow-down' : 'arrow-up' }}"></ion-icon>
+    </ion-avatar>
+    <ion-label *ngIf="roshTimerStart">
+      Roshan has been slain!
+    </ion-label>
+    <ion-label *ngIf="!roshTimerStart">
+      Roshan is currently {{ rosh }}
+    </ion-label>
+    <ion-button slot="end" (click)="startRoshTimer()" *ngIf="!roshTimerStart">
+      Start Timer
+    </ion-button>
+    <ion-chip slot="end" *ngIf="roshTimerStart">
+      {{ seconds - roshTimerStart }}
+    </ion-chip>
   </ion-item>
 
-  <ion-item class="rosh ion-margin-top">
-    Rosh is <ion-icon name="{{ rosh === 'south' ? 'arrow-down' : 'arrow-up' }}"></ion-icon>
+  <ion-item class="daynight ion-margin-top">
+    <ion-avatar slot="start">
+      <ion-icon name="{{ dayNight === 'day' ? 'sunny' : 'moon' }}"></ion-icon>
+    </ion-avatar>
+    <ion-label>
+      It is currently {{ dayNight }}
+    </ion-label>
   </ion-item>
 
   <ion-list class="ion-margin-top">
@@ -37,5 +64,23 @@
       {{ warningStrings[warning] }}
     </ion-item>
   </ion-list>
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Settings</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-checkbox [(ngModel)]="debug" labelPlacement="end">Debug Tools</ion-checkbox>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 
 </ion-content>

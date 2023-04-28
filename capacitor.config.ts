@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'pog.gorgc.twitch',
-  appName: "Gorgc's Dota2 Egg Timer",
+  appName: 'gorgcs-dota-2-egg-timer',
   webDir: 'www',
   bundledWebRuntime: false
 };

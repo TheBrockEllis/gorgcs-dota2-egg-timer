@@ -5,8 +5,10 @@ const ROSH_INTERVAL = 300;
 const WISDOM_RUNE_INTERVAL = 420;
 const BOUNTY_RUNE_INTERVAL = 180;
 const LOTUS_INTERVAL = 180;
-const POWER_RUNE_INTERVAL = 120;
-const TORMENTOR_INTERVAL = 1200;
+const POWER_RUNE_INTERVAL = 2 * 60;
+const TORMENTOR_INTERVAL = 20 * 60;
+const MIN_ROSH_SPAWN_INTERVAL = 8 * 60;
+const MAX_ROSH_SPAWN_INTERVAL = 11 * 60;
 
 const WARNING_BUFFER = 30;
 
@@ -20,6 +22,10 @@ export class HomePage {
   seconds: number = 0;
   formattedTime: string = '00:00';
   timerIntervalReference: any;
+  roshTimerStart: number = 0;
+
+  isModalOpen: boolean = false;
+  debug:boolean = false;
 
   warnings: string[] = [];
 
@@ -32,7 +38,8 @@ export class HomePage {
     'daynight': `Day/night will change in ${WARNING_BUFFER} seconds`,
     'wisdomrunes': `Wisdom runes will spawn in ${WARNING_BUFFER} seconds`,
     'bountyrunes': `Bounty runes will spawn in ${WARNING_BUFFER} seconds`,
-    'lotus': `Lotus flowers will spawn in ${WARNING_BUFFER} seconds`
+    'lotus': `Lotus flowers will spawn in ${WARNING_BUFFER} seconds`,
+    'roshanspawn': 'Roshan respawning in 8 to 11 minutes'
   }
 
   warningStrings: any = {
@@ -41,7 +48,8 @@ export class HomePage {
     'daynight': 'Day/Night Cycle',
     'rosh': 'Roshan Changing Location',
     'wisdomrunes': 'Wisdom Runes',
-    'lotus': 'Lotus Blossom spawns'
+    'lotus': 'Lotus Blossom spawns',
+    'roshanspawn': 'Roshan respawning in 8-11 minutes'
   }
 
   constructor() {
@@ -77,6 +85,10 @@ export class HomePage {
     this.checkForWisdomRunes(seconds);
     this.checkPowerRunes(seconds);
     this.checkBountyRunes(seconds);
+
+    if (this.roshTimerStart) {
+      this.checkRoshTimer(seconds);
+    }
   }
 
   pushToWarnings(warning: string) {
@@ -143,10 +155,31 @@ export class HomePage {
     }
   }
 
+  startRoshTimer() {
+    this.roshTimerStart = this.seconds;
+    this.pushToWarnings('roshanspawn');
+  }
+
+  checkRoshTimer(currentSeconds:number) {
+    const elapsedSeconds = currentSeconds - this.roshTimerStart;
+
+    if (elapsedSeconds % MIN_ROSH_SPAWN_INTERVAL === 0) {
+      this.speak(`Minimum Roshan respawn timer reached`);
+    } else if (elapsedSeconds % MAX_ROSH_SPAWN_INTERVAL === 0) {
+      this.speak(`Max Roshan respawn timer reached`);
+      this.warnings.splice(this.warnings.indexOf('roshanspawn'));
+      this.roshTimerStart = 0;
+    }
+  }
+
   ///////////////////////////////////////////////////
   // TODO remove this after debugging
   fastForward(seconds:number) {
     this.seconds = this.seconds + seconds;
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
   }
 
 }
